@@ -24,15 +24,13 @@
 
         <ol type="A">
             <li>Consult the API documentation to learn which URL to use to fetch information about non-alcoholic drinks.
-                Store the URL in a variable called <code>requestURL</code>.
-                <strong>HINT:</strong> ensure your URL begins with "http://" or "https://".
-            </li>
+                Store the URL in a variable called <code>requestUrl</code>.
+                <strong>HINT:</strong> ensure your URL begins with "http://" or "https://".</li>
             <li>Fetch the data using the specified URL.</li>
             <li>Display the number of non-alcoholic drinks (i.e. 58).</li>
             <li>Loop through the drinks, and display the name and unique identifier of each.</li>
         </ol>
     </p>
-
 
     <h2>Part 2</h2>
     <p>
@@ -48,43 +46,38 @@
             The child <code>div</code> element should contain a <code>p</code> tag to display the drink name,
             and an <code>img</code> tag to display the image (using an image height of 100px).
         </li>
-
     </ol>
 
     <hr>
     <h2>Display</h2>
-
     <p>Drinks: <span id="display-drinks-count">TODO</span></p>
-    <div id="display-drinks">
-    </div>
-
-
-
+    <div id="display-drinks"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script type="text/javascript">
+        const requestUrl = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Non_Alcoholic";
 
-        var requestUrl = "TODO"
+        d3.json(requestUrl).then(data => {
+            const drinks = data.drinks;
 
-        d3.json(requestUrl).then(function(data){
-            console.log("DATA:", data)
+            console.log("PART 1...");
+            console.log("Number of drinks:", drinks.length);
+            drinks.forEach(d => console.log(d.strDrink, d.idDrink));
 
+            console.log("PART 2...");
+            document.getElementById("display-drinks-count").textContent = drinks.length;
 
-            console.log("---------------------")
-            console.log("PART 1...")
-
-
-
-
-
-            console.log("---------------------")
-            console.log("PART 2...")
-
-
-
-
+            const container = document.getElementById("display-drinks");
+            drinks.forEach(({strDrink, strDrinkThumb}) => {
+                const div = document.createElement("div");
+                div.innerHTML = `
+                    <p>${strDrink}</p>
+                    <img src="${strDrinkThumb}" height="100" alt="${strDrink}">
+                `;
+                container.appendChild(div);
+            });
         })
-
+        .catch(err => console.error(err));
     </script>
 </body>
 </html>
